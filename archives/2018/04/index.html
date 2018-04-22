@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Head template -->
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Description -->
+    
+        <meta name="description" content="欧阳童的个人博客——学习，总结，提升">
+    
+
+    <!-- Keywords -->
+    
+        <meta name="keywords" content="Computer Vision, Deep Learning, Machine Learning, Python, Hexo, Snow">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="itongworld, itongworld@gmail.com">
+    
+
+    <!-- Favicon -->
+    
+        <link rel="icon" href="/favicon.png" type="image/x-icon">
+    
+
+
+    <!-- Title -->
+    
+    <title>
+      
+        归档 - 
+        欧阳阳阳的个人博客
+    </title>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fa_css/fa.css">
+
+
+
+
+    <!-- Different css styles for different templates -->
+    
+      <link rel="stylesheet" href="/css/index.css">
+    
+
+
+</head>
+
+<body>
+
+<!-- main content -->
+<div class="container-fluid">
+    <div class="row">
+      <!-- left brief profile -->
+      <!-- index/archive/about section profile left -->
+<div class="col-md-3 section-profile">
+    <div class="logo-image"><img src="/index_user_avatar.jpg" class="img-responsive img-thumbnail center-block" title="Snow"></div>
+    <h4 class="profile-nickname">itongworld</h4>
+
+
+    <h3 class="center-block blockquote-font">If I have seen a little further, It is by standing on the shoulder of giants.</h3>
+
+</div>
+
+
+      <!-- top nav -->
+      
+        <!-- index/category/about section nav right top -->
+<div class="col-md-9 col-md-offset-3 section-posts">
+
+    <!-- website nav -->
+    <nav class="navbar navbar-fixed-top col-md-offset-3">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-controls="bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">itongworld</a>
+            </div>
+
+
+            <div id="bs-example-navbar-collapse-1" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                      
+                        <li><a href="/">首页</a></li>
+                      
+
+                  
+                      
+                        <li><a href="/archives" class="current">归档</a></li>
+                      
+
+                  
+                      
+                        <li><a href="/about">关于</a></li>
+                      
+
+                  
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+      
+
+      <div class="blog-achive">
+      <!-- archive list -->
+      
+      
+        
+        
+          
+          
+            <div class="achive-item">
+              <!-- archive year -->
+              <h3 class="archive-year"><a href="/archives/2018">2018</a></h3>
+              <div class="archive-content">
+
+        
+        <!-- archive item -->
+<!-- 这里有个小BUG： 如果两个行内元素换行书写，那么浏览器显示时，会自动在这两个行内元素间添加一个空格 -->
+<div class="archive-item">
+
+  <!-- item date -->
+  
+
+  <!-- archive title -->
+  
+    <span>04-18</span><a href="/2018/04/18/误差反向传播/" target="_blank">误差反向传播</a>
+  
+</div>
+
+      
+      
+        </div></div>
+      
+
+    </div><!-- end of <div class="blog-achive"> -->
+
+      <!-- pagination -->
+      <!-- website pagination -->
+<nav aria-label="Page navigation" class="paginator">
+    <ul class="pager">
+        
+          <!-- <li class="disabled"><a href="javascript:void(0);">上一页</a></li> -->
+          <li class="disabled"><a href="#" onclick="javascript:return false;">上一页</a></li>
+        
+
+        
+          <li class="disabled"><a href="#" onclick="javascript:return false;">下一页</a></li>
+        
+    </ul>
+</nav>
+
+
+      <!-- footer -->
+        <!-- website footer -->
+
+  <div class="section-footer">
+      <p class="footer-copyright">&copy;&nbsp;2017-2018&nbsp;itongworld</p>
+      <p class="footer-poweredby">Powered by <a href="https://github.com/itongworld/Hexo-Theme-Snow">Snow</a> and <a href="https://hexo.io/">Hexo</a></p>
+  </div>
+</div>
+
+
+    </div>
+</div>
+<script src="/js/jquery.js"></script>
+<script src="/js/script.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+<!-- <script type="text/javascript" async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script> -->
+<script type="text/javascript">
+
+    $(function() {
+
+
+        //index和post页面都有post-content类。blog-post下的post-content类是index页面的，post-container下的post-content类是post页面的。
+        //这段代码要放在最前面设置好图片相应宽度。
+        //$(".post-container .post-content p img[alt]").each(function(){
+        $(".post-content p img[alt]").each(function(){
+
+            var altstr = $(this).attr("alt");
+            //alert(altstr);
+
+            if(altstr.endsWith("-1gg")){
+                $(this).addClass("gg1");
+            }
+
+            else if(altstr.endsWith("-2gg")){
+                $(this).addClass("gg2");
+            }
+
+            else if(altstr.endsWith("-3gg")){
+                $(this).addClass("gg3");
+            }
+            else{
+                $(this).addClass("gg1");
+                altstr += "-1gg";
+                $(this).attr("alt", altstr);
+            }
+
+            //add title
+            $(this).attr("title", altstr.substring(0, altstr.length-4));
+
+        });
+
+
+
+        //设置图片初始相应高度。
+        $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+        //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+        // $(window).load(function() {
+        //
+        //   $(".post-content p img").height($(".post-content p img").width());
+        //   //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //   console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //
+        // });
+
+
+        $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+        //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+        //Gallery
+        $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+
+
+
+        //设置图片缩放相应高度。
+        $(window).resize(function() {
+            $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+            //alert($(".post-content p img").width() + ", " + $(".post-content p img").height())
+            //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+
+            $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+            //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+            //Gallery
+            $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+        });
+
+
+
+    });
+
+
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

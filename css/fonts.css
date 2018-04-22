@@ -1,0 +1,127 @@
+@charset "utf-8";
+/***
+ *author OUYANGTONG
+***/
+
+
+/* FONT CASLON */
+@font-face {
+    font-family: CASLON;
+    src: url('../fonts/CASLON/ACaslonPro-Regular.otf');
+}
+@font-face {
+    font-family: CASLON;
+    src: url('../fonts/CASLON/ACaslonPro-bold.otf');
+
+    /* 400 等同于normal， 而700等同于bold */
+    font-weight: bold;
+}
+@font-face {
+    font-family: CASLON;
+    src: url('../fonts/CASLON/ACaslonPro-Italic.otf');
+    font-style: italic;
+}
+@font-face {
+    font-family: CASLON;
+    src: url('../fonts/CASLON/ACaslonPro-BoldItalic.otf');
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: CASLON-REGULAR;
+    src: url('../fonts/CASLON/ACaslonPro-Regular.otf');
+}
+@font-face {
+    font-family: CASLON-BOLD;
+    src: url('../fonts/CASLON/ACaslonPro-bold.otf');
+    
+}
+@font-face {
+    font-family: CASLON-ITALIC;
+    src: url('../fonts/CASLON/ACaslonPro-Italic.otf');
+}
+@font-face {
+    font-family: CASLON-BOLDITALIC;
+    src: url('../fonts/CASLON/ACaslonPro-BoldItalic.otf');
+
+}
+@font-face {
+    font-family: CASLON-SEMIBOLD;
+    src: url('../fonts/CASLON/ACaslonPro-SemiBold.otf');
+}
+@font-face {
+    font-family: CASLON-SEMIBOLDITALIC;
+    src: url('../fonts/CASLON/ACaslonPro-SemiBoldItalic.otf');
+}
+
+
+/* FONT SHRIKHAND */
+@font-face {
+    font-family: SHRIKHAND;
+    src: url('../fonts/SHRIKHAND/Shrikhand-Regular.ttf');
+}
+
+
+/* FONT FANGZHENG-ZHENGCUHEI */
+@font-face {
+    font-family: FANGZHENG-ZHENGCUHEI;
+    src: url('../fonts/FANGZHENG/方正正粗黑简体.ttf');
+}
+
+
+/* FONT PROXIMANOVA */
+@font-face {
+    font-family: PROXIMANOVA;
+    src: url('../fonts/PROXIMANOVA/ProximaNova-Regular.otf');
+}
+
+
+
+/* FONT AVERIASERIFLIBRE */
+@font-face {
+    font-family: AVERIASERIFLIBRE;
+    src: url('../fonts/AVERIASERIFLIBRE/AveriaSerifLibre-Regular.ttf');
+}
+@font-face {
+    font-family: AVERIASERIFLIBRE;
+    src: url('../fonts/AVERIASERIFLIBRE/AveriaSerifLibre-Bold.ttf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: AVERIASERIFLIBRE-BOLD;
+    src: url('../fonts/AVERIASERIFLIBRE/AveriaSerifLibre-Bold.ttf');
+}
+
+
+@font-face {
+    font-family: ROBOTO;
+    src: url('../fonts/ROBOTO/Roboto-Regular.ttf');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Head template -->
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Description -->
+    
+        <meta name="description" content="欧阳童的个人博客——学习，总结，提升">
+    
+
+    <!-- Keywords -->
+    
+        <meta name="keywords" content="Computer Vision, Deep Learning, Machine Learning, Python, Hexo, Snow">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="itongworld, itongworld@gmail.com">
+    
+
+    <!-- Favicon -->
+    
+        <link rel="icon" href="/favicon.png" type="image/x-icon">
+    
+
+
+    <!-- Title -->
+    
+    <title>
+      
+        快速幂方 - 
+        欧阳阳阳的个人博客
+    </title>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fa_css/fa.css">
+
+
+
+
+    <!-- Different css styles for different templates -->
+    
+      <link rel="stylesheet" href="/css/post.css">
+    
+
+
+</head>
+
+<body>
+
+<!-- main content -->
+<div class="post-banner">
+    <div class="banner-background" style="background-size: cover;background-image: url('/img/default_post_cover.png');"></div>
+</div>
+
+<div class="post-title">
+    <h1>快速幂方</h1>
+    <div class="post-meta">
+            <span class="meta-entity">
+                
+                
+                <span class="meta-date">Sep 10, 2017</span>
+            </span>
+            <span class="meta-entity">
+                <span class="meta-tags">
+                    
+                      <a href="/tags/基础算法/">基础算法</a>
+                    
+                      <a href="/tags/POWER-X-Y/">POWER(X, Y)</a>
+                    
+                </span>
+            </span>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- post container in the very middle -->
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+
+            <!-- post container: containing content, share -->
+            <div class="post-container">
+
+                <!-- post content -->
+                <div class="post-content">
+                    <p>power(x, y)的经典应用。<br><a id="more"></a></p>
+<p>快速幂方是快速求解问题的一种经典算法，可以快速求解<strong>斐波那契数列（Fibonacci Sequence）</strong>问题及其相关问题。</p>
+<h2 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h2><p>递归算法如下。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">power</span><span class="params">(x, n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> x == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> n&lt;<span class="number">0</span>:</span><br><span class="line">        n = -n</span><br><span class="line">        x = <span class="number">1</span>/x</span><br><span class="line">    <span class="keyword">return</span> self.myPow(x*x, n/<span class="number">2</span>) <span class="keyword">if</span> n%<span class="number">2</span> == <span class="number">0</span> <span class="keyword">else</span> x*self.myPow(x*x, n/<span class="number">2</span>)</span><br></pre></td></tr></table></figure></p>
+<p>非递归算法如下。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">power</span><span class="params">(self, base, exponent)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> base == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> exponent &lt; <span class="number">0</span>:</span><br><span class="line">        exponent = -exponent</span><br><span class="line">        base = <span class="number">1</span>/base</span><br><span class="line">    </span><br><span class="line">    res=<span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> exponent&gt;<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> (exponent &amp; <span class="number">1</span>) == <span class="number">1</span>:</span><br><span class="line">            res *= base</span><br><span class="line">        exponent &gt;&gt;= <span class="number">1</span></span><br><span class="line">        base *= base</span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></p>
+<h2 id="斐波那契数列（Fibonacci-Sequence）"><a href="#斐波那契数列（Fibonacci-Sequence）" class="headerlink" title="斐波那契数列（Fibonacci Sequence）"></a>斐波那契数列（Fibonacci Sequence）</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci_r</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> fibonacci_r(n<span class="number">-1</span>) + fibonacci_r(n<span class="number">-2</span>)</span><br></pre></td></tr></table></figure>
+<p>递归算法求解斐波那契数列，时间复杂度为$O(2^{n})$，空间复杂度为$O(n)$。</p>
+<p>递归算法之所以效率不高，是因为这种方法进行了<strong>大量重复计算</strong>。因此，可以考虑使用<strong>动态规划</strong>求解。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci_dp</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n&lt;=<span class="number">0</span>: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    first=<span class="number">1</span></span><br><span class="line">    second=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> n&gt;<span class="number">2</span>:</span><br><span class="line">        third=first+second</span><br><span class="line">        first=second</span><br><span class="line">        second=third</span><br><span class="line">        n-=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> second</span><br></pre></td></tr></table></figure></p>
+<p>动态规划求解斐波那契数列，时间复杂度为$O(n)$，空间复杂度为$O(1)$。</p>
+<p>有没有更快一点的方法呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci_f</span><span class="params">(self, n)</span>:</span></span><br><span class="line">    q = [[<span class="number">1</span>,<span class="number">1</span>], [<span class="number">1</span>,<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    res = self.mypower(q, n<span class="number">-1</span>)</span><br><span class="line">    <span class="keyword">return</span> res[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mypower</span><span class="params">(self, a, n)</span>:</span></span><br><span class="line">    ret = [[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>]]</span><br><span class="line">    <span class="keyword">while</span> n&gt;<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> (n &amp; <span class="number">1</span>) == <span class="number">1</span>:</span><br><span class="line">            ret = self.mymultiply(ret, a)</span><br><span class="line">        n &gt;&gt;= <span class="number">1</span></span><br><span class="line">        a = self.mymultiply(a, a)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="comment">#Matrix Multiplication</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mymultiply</span><span class="params">(self, a, b)</span>:</span></span><br><span class="line">    c=[[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> xrange(<span class="number">2</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> xrange(<span class="number">2</span>)]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> xrange(<span class="number">2</span>):</span><br><span class="line">            c[i][j]=(a[i][<span class="number">0</span>]*b[<span class="number">0</span>][j]+a[i][<span class="number">1</span>]*b[<span class="number">1</span>][j])</span><br><span class="line">    <span class="keyword">return</span> c</span><br></pre></td></tr></table></figure>
+<p>快速幂方算法求解斐波那契数列，时间复杂度为$O(\log_{2}^{n})$，空间复杂度为$O(1)$。</p>
+<p>快速幂方算法关键在于<strong>构造问题解的初始矩阵</strong>。</p>
+
+                </div>
+
+                <!-- post share -->
+                <div class="post-share">
+                    <div class="share-sina-weibo">
+                        <a class="fa fa-weibo" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var f='http://service.weibo.com/share/share.php?appkey=2241392681&searchPic=true',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();})(screen,document,encodeURIComponent,'','','','','',''));"></a>
+                    </div>
+
+                    <div class="share-tencent-wechat">
+                        <a class="fa fa-wechat" href="javascript:void(0)" id="popup"></a>
+                    </div>
+                </div>
+            </div><!-- end of post-container -->
+        </div>
+
+
+        <!-- post toc(table of content) -->
+        <div class="col-xs-1 col-sm-2 col-md-2 col-lg-3">
+            <div class="post-toc">
+                <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本算法"><span class="nav-text">基本算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#斐波那契数列（Fibonacci-Sequence）"><span class="nav-text">斐波那契数列（Fibonacci Sequence）</span></a></li></ol>
+            </div>
+        </div><!-- end of post toc -->
+
+    </div><!-- end of row -->
+</div><!-- end of container-fluid -->
+
+  <!-- website footer -->
+
+<div class="post-footer">
+  <p class="footer-copyright">&copy;&nbsp;2017-2018&nbsp;itongworld</p>
+  <p class="footer-poweredby">Powered by <a href="https://github.com/itongworld">Snow</a> and <a href="https://hexo.io/">Hexo</a></p>
+</div>
+
+<!-- qrcode pop-up dialog -->
+<div class="dialog-modal" id="dialog-modal">
+    <a href="javascript:void(0)" title="关闭" id="popup-close"><i class="fa fa-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+        <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&choe=UTF-8&chld=L|1&chl=http://weibo.com/ttarticle/p/show?id=2309404054181588669991#_0" alt="二维码生成失败 :(" id="share-qrcode">
+    </div>
+</div>
+
+<!-- global mask -->
+<div class="mask" id="mask"></div>
+
+
+
+
+<script src="/js/jquery.js"></script>
+<script src="/js/script.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+<!-- <script type="text/javascript" async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script> -->
+<script type="text/javascript">
+
+    $(function() {
+
+
+        //index和post页面都有post-content类。blog-post下的post-content类是index页面的，post-container下的post-content类是post页面的。
+        //这段代码要放在最前面设置好图片相应宽度。
+        //$(".post-container .post-content p img[alt]").each(function(){
+        $(".post-content p img[alt]").each(function(){
+
+            var altstr = $(this).attr("alt");
+            //alert(altstr);
+
+            if(altstr.endsWith("-1gg")){
+                $(this).addClass("gg1");
+            }
+
+            else if(altstr.endsWith("-2gg")){
+                $(this).addClass("gg2");
+            }
+
+            else if(altstr.endsWith("-3gg")){
+                $(this).addClass("gg3");
+            }
+            else{
+                $(this).addClass("gg1");
+                altstr += "-1gg";
+                $(this).attr("alt", altstr);
+            }
+
+            //add title
+            $(this).attr("title", altstr.substring(0, altstr.length-4));
+
+        });
+
+
+
+        //设置图片初始相应高度。
+        $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+        //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+        // $(window).load(function() {
+        //
+        //   $(".post-content p img").height($(".post-content p img").width());
+        //   //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //   console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //
+        // });
+
+
+        $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+        //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+        //Gallery
+        $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+
+
+
+        //设置图片缩放相应高度。
+        $(window).resize(function() {
+            $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+            //alert($(".post-content p img").width() + ", " + $(".post-content p img").height())
+            //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+
+            $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+            //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+            //Gallery
+            $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+        });
+
+
+
+    });
+
+
+</script>
+
+
+
+
+  <script type="text/javascript">
+    $(function () {
+
+        $('body').scrollspy({
+            target: '.post-toc',
+            offset: 10
+        });
+
+        var $win = $(window);
+        var itemOffsetTop = $(".post-banner").offset().top;
+        var itemOuterHeight = $(".post-banner").outerHeight();
+        var winHeight = $win.height();
+        $win.scroll(function () {
+            var winScrollTop = $win.scrollTop();
+            if(!(winScrollTop > itemOffsetTop+itemOuterHeight) && !(winScrollTop < itemOffsetTop-winHeight)) {
+                // console.log('出现了');
+                $(".post-toc").removeClass("f");
+            } else {
+                // console.log('消失了');
+                $(".post-toc").addClass("f")
+            }
+        });
+
+        $("#popup").click(function(){
+            $("#dialog-modal").addClass("in");
+            $("#mask").addClass("in");
+        });
+
+        $("#mask").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+        });
+
+
+        $("#popup-close").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+
+        });
+
+    });
+
+  </script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Head template -->
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Description -->
+    
+        <meta name="description" content="欧阳童的个人博客——学习，总结，提升">
+    
+
+    <!-- Keywords -->
+    
+        <meta name="keywords" content="Computer Vision, Deep Learning, Machine Learning, Python, Hexo, Snow">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="itongworld, itongworld@gmail.com">
+    
+
+    <!-- Favicon -->
+    
+        <link rel="icon" href="/favicon.png" type="image/x-icon">
+    
+
+
+    <!-- Title -->
+    
+    <title>
+      
+        PYTHON包/模块引用总结 - 
+        欧阳阳阳的个人博客
+    </title>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fa_css/fa.css">
+
+
+
+
+    <!-- Different css styles for different templates -->
+    
+      <link rel="stylesheet" href="/css/post.css">
+    
+
+
+</head>
+
+<body>
+
+<!-- main content -->
+<div class="post-banner">
+    <div class="banner-background" style="background-size: cover;background-image: url('/img/default_post_cover.png');"></div>
+</div>
+
+<div class="post-title">
+    <h1>PYTHON包/模块引用总结</h1>
+    <div class="post-meta">
+            <span class="meta-entity">
+                
+                
+                <span class="meta-date">May 09, 2017</span>
+            </span>
+            <span class="meta-entity">
+                <span class="meta-tags">
+                    
+                      <a href="/tags/PYTHON/">PYTHON</a>
+                    
+                      <a href="/tags/基础语法/">基础语法</a>
+                    
+                </span>
+            </span>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- post container in the very middle -->
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+
+            <!-- post container: containing content, share -->
+            <div class="post-container">
+
+                <!-- post content -->
+                <div class="post-content">
+                    <h2 id="同一目录下的引用"><a href="#同一目录下的引用" class="headerlink" title="同一目录下的引用"></a>同一目录下的引用</h2><p>如果要引用的包（含有<code>__init__.py</code>文件的文件夹）或模块（即<code>py</code>文件）和当前文件在同一个目录下，则直接<code>import</code>即可。</p>
+<p>注意，如果将包作为普通模块导入的话，即<code>import mypackage</code>，那么只是导入了这个包下的<code>__init__.py</code>模块，其他python模块并没有导入。此时如果调用该包下某个模块的类<code>mypackage.mymodel.classA</code>，则会报错<code>AttributeError</code>。</p>
+<p>所以，在引用时通常是引用到具体的模块或所有的模块，而不是包。另外，如果使用<code>import mypackage.mymodel</code>语句导入模块，则在使用时模块时要使用完整的路径，即<code>obj=mypackage.mymodel.classA()</code>，如果只使用模块名，即<code>obj=mymodel.classA()</code>，则会报错<code>NameError</code>。<br><a id="more"></a></p>
+<h2 id="不同目录下的引用"><a href="#不同目录下的引用" class="headerlink" title="不同目录下的引用"></a>不同目录下的引用</h2><p>如果要引用的包或模块和当前文件不在同一个目录下，则需要告诉Python解释器去哪里寻找需要的包或模块。通常有下面几种方式。</p>
+<h3 id="1-sys-path-append"><a href="#1-sys-path-append" class="headerlink" title="1. sys.path.append"></a>1. sys.path.append</h3><p>在需要引用的文件中添加以下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.append(<span class="string">r'C:\Users\OUYANG\Desktop\te\mmm'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">sys.path.append(<span class="string">r'mmm'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>当前文件在<code>te</code>文件夹下，引用包在<code>mmm</code>文件夹下。绝对路径和相对路径均可，但必须是包的路径，即不能写成<code>sys.path.append(r&#39;C:\Users\OUYANG\Desktop\te\mmm\mypackage&#39;)</code>或<code>sys.path.append(r&#39;mmm\mypackage&#39;)</code>，否则会报错<code>ImportError</code>。</p>
+<h3 id="2-XXX-pth文件"><a href="#2-XXX-pth文件" class="headerlink" title="2. XXX.pth文件"></a>2. XXX.pth文件</h3><p>在<code>PythonInstallDirectory\Lib\site-packages</code>目录下新建<code>XXX.pth</code>文件，文件名称可以自定。然后在文件中添加引用包或模块的绝对路径<code>C:\Users\OUYANG\Desktop\te\mmm\mm</code>，同样必须是包的路径，否则会报错<code>ImportError</code>。</p>
+<h3 id="3-site-packages目录"><a href="#3-site-packages目录" class="headerlink" title="3. site-packages目录"></a>3. site-packages目录</h3><p>将需要引用的包或模块放在<code>PythonInstallDirectory\Lib\site-packages</code>目录下即可正常引用。</p>
+<h3 id="4-PYTHONPATH环境变量"><a href="#4-PYTHONPATH环境变量" class="headerlink" title="4. PYTHONPATH环境变量"></a>4. PYTHONPATH环境变量</h3><p>新建系统变量，变量名为<code>PYTHONPATH</code>，变量值为引用包或模块的绝对路径，必须是包的路径，否则会报错<code>ImportError</code>。</p>
+<h2 id="Import语句"><a href="#Import语句" class="headerlink" title="Import语句"></a>Import语句</h2><p>使用<code>import</code>语句引用的包或模块名不能含有空格，但是如果不方便更改包或模块名，可以使用python内置<code>__import__</code>函数，其实<code>import</code>语句就是通过<code>__import__</code>内置函数实现的。</p>
+<p>例如以下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">m168 = __import__(<span class="string">'[168]Excel Sheet Column Title'</span>)</span><br><span class="line"><span class="keyword">print</span> dir(m168)</span><br><span class="line">s168=m168.Solution()</span><br><span class="line">title=s168.convertToTitle(res)</span><br></pre></td></tr></table></figure></p>
+<p>虽然某些编辑器可能会有无法解析的错误，但此时引用包或模块确实已经引用了，可以忽略这种错误。</p>
+
+                </div>
+
+                <!-- post share -->
+                <div class="post-share">
+                    <div class="share-sina-weibo">
+                        <a class="fa fa-weibo" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var f='http://service.weibo.com/share/share.php?appkey=2241392681&searchPic=true',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();})(screen,document,encodeURIComponent,'','','','','',''));"></a>
+                    </div>
+
+                    <div class="share-tencent-wechat">
+                        <a class="fa fa-wechat" href="javascript:void(0)" id="popup"></a>
+                    </div>
+                </div>
+            </div><!-- end of post-container -->
+        </div>
+
+
+        <!-- post toc(table of content) -->
+        <div class="col-xs-1 col-sm-2 col-md-2 col-lg-3">
+            <div class="post-toc">
+                <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#同一目录下的引用"><span class="nav-text">同一目录下的引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同目录下的引用"><span class="nav-text">不同目录下的引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-sys-path-append"><span class="nav-text">1. sys.path.append</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-XXX-pth文件"><span class="nav-text">2. XXX.pth文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-site-packages目录"><span class="nav-text">3. site-packages目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-PYTHONPATH环境变量"><span class="nav-text">4. PYTHONPATH环境变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Import语句"><span class="nav-text">Import语句</span></a></li></ol>
+            </div>
+        </div><!-- end of post toc -->
+
+    </div><!-- end of row -->
+</div><!-- end of container-fluid -->
+
+  <!-- website footer -->
+
+<div class="post-footer">
+  <p class="footer-copyright">&copy;&nbsp;2017-2018&nbsp;itongworld</p>
+  <p class="footer-poweredby">Powered by <a href="https://github.com/itongworld">Snow</a> and <a href="https://hexo.io/">Hexo</a></p>
+</div>
+
+<!-- qrcode pop-up dialog -->
+<div class="dialog-modal" id="dialog-modal">
+    <a href="javascript:void(0)" title="关闭" id="popup-close"><i class="fa fa-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+        <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&choe=UTF-8&chld=L|1&chl=http://weibo.com/ttarticle/p/show?id=2309404054181588669991#_0" alt="二维码生成失败 :(" id="share-qrcode">
+    </div>
+</div>
+
+<!-- global mask -->
+<div class="mask" id="mask"></div>
+
+
+
+
+<script src="/js/jquery.js"></script>
+<script src="/js/script.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+<!-- <script type="text/javascript" async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script> -->
+<script type="text/javascript">
+
+    $(function() {
+
+
+        //index和post页面都有post-content类。blog-post下的post-content类是index页面的，post-container下的post-content类是post页面的。
+        //这段代码要放在最前面设置好图片相应宽度。
+        //$(".post-container .post-content p img[alt]").each(function(){
+        $(".post-content p img[alt]").each(function(){
+
+            var altstr = $(this).attr("alt");
+            //alert(altstr);
+
+            if(altstr.endsWith("-1gg")){
+                $(this).addClass("gg1");
+            }
+
+            else if(altstr.endsWith("-2gg")){
+                $(this).addClass("gg2");
+            }
+
+            else if(altstr.endsWith("-3gg")){
+                $(this).addClass("gg3");
+            }
+            else{
+                $(this).addClass("gg1");
+                altstr += "-1gg";
+                $(this).attr("alt", altstr);
+            }
+
+            //add title
+            $(this).attr("title", altstr.substring(0, altstr.length-4));
+
+        });
+
+
+
+        //设置图片初始相应高度。
+        $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+        //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+        // $(window).load(function() {
+        //
+        //   $(".post-content p img").height($(".post-content p img").width());
+        //   //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //   console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //
+        // });
+
+
+        $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+        //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+        //Gallery
+        $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+
+
+
+        //设置图片缩放相应高度。
+        $(window).resize(function() {
+            $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+            //alert($(".post-content p img").width() + ", " + $(".post-content p img").height())
+            //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+
+            $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+            //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+            //Gallery
+            $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+        });
+
+
+
+    });
+
+
+</script>
+
+
+
+
+  <script type="text/javascript">
+    $(function () {
+
+        $('body').scrollspy({
+            target: '.post-toc',
+            offset: 10
+        });
+
+        var $win = $(window);
+        var itemOffsetTop = $(".post-banner").offset().top;
+        var itemOuterHeight = $(".post-banner").outerHeight();
+        var winHeight = $win.height();
+        $win.scroll(function () {
+            var winScrollTop = $win.scrollTop();
+            if(!(winScrollTop > itemOffsetTop+itemOuterHeight) && !(winScrollTop < itemOffsetTop-winHeight)) {
+                // console.log('出现了');
+                $(".post-toc").removeClass("f");
+            } else {
+                // console.log('消失了');
+                $(".post-toc").addClass("f")
+            }
+        });
+
+        $("#popup").click(function(){
+            $("#dialog-modal").addClass("in");
+            $("#mask").addClass("in");
+        });
+
+        $("#mask").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+        });
+
+
+        $("#popup-close").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+
+        });
+
+    });
+
+  </script>
+
+
+
+
+</body>
+</html>

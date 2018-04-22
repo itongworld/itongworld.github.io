@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Head template -->
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Description -->
+    
+        <meta name="description" content="欧阳童的个人博客——学习，总结，提升">
+    
+
+    <!-- Keywords -->
+    
+        <meta name="keywords" content="Computer Vision, Deep Learning, Machine Learning, Python, Hexo, Snow">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="itongworld, itongworld@gmail.com">
+    
+
+    <!-- Favicon -->
+    
+        <link rel="icon" href="/favicon.png" type="image/x-icon">
+    
+
+
+    <!-- Title -->
+    
+    <title>
+      
+        PYTHON闭包编程 - 
+        欧阳阳阳的个人博客
+    </title>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fa_css/fa.css">
+
+
+
+
+    <!-- Different css styles for different templates -->
+    
+      <link rel="stylesheet" href="/css/post.css">
+    
+
+
+</head>
+
+<body>
+
+<!-- main content -->
+<div class="post-banner">
+    <div class="banner-background" style="background-size: cover;background-image: url('/img/default_post_cover.png');"></div>
+</div>
+
+<div class="post-title">
+    <h1>PYTHON闭包编程</h1>
+    <div class="post-meta">
+            <span class="meta-entity">
+                
+                
+                <span class="meta-date">Jun 05, 2016</span>
+            </span>
+            <span class="meta-entity">
+                <span class="meta-tags">
+                    
+                      <a href="/tags/PYTHON/">PYTHON</a>
+                    
+                      <a href="/tags/基础语法/">基础语法</a>
+                    
+                </span>
+            </span>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- post container in the very middle -->
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+
+            <!-- post container: containing content, share -->
+            <div class="post-container">
+
+                <!-- post content -->
+                <div class="post-content">
+                    <h2 id="返回函数"><a href="#返回函数" class="headerlink" title="返回函数"></a>返回函数</h2><p>Python中的函数不但可以返回<code>int</code>、<code>str</code>、<code>list</code>、<code>dict</code>等数据类型，还可以返回函数。</p>
+<p>例如，定义一个返回函数<code>g</code>的函数<code>f</code>，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">print</span> <span class="string">'call f()...'</span></span><br><span class="line">	<span class="comment">#define g</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">		<span class="keyword">print</span> <span class="string">'call g()...'</span></span><br><span class="line">	<span class="comment">#return g</span></span><br><span class="line">	<span class="keyword">return</span> g</span><br></pre></td></tr></table></figure></p>
+<p>仔细观察上面的函数定义，我们在函数内部又定义了一个函数<code>g</code>。由于函数也是一个对象，函数名就是指向函数的变量，所以最外层函数可以返回这个变量<code>g</code>，也就是内层函数本身。<br><a id="more"></a></p>
+<p>调用函数<code>f</code>，则会得到<code>f</code>返回的那个函数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x=f()</span><br><span class="line">call f()...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">&lt;function f at <span class="number">0x0000000002CC2048</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x()</span><br><span class="line">call g()...</span><br></pre></td></tr></table></figure></p>
+<p>请注意区分返回函数和返回值：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myabs</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">return</span> abs</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myabs2</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> abs(x)</span><br></pre></td></tr></table></figure></p>
+<p>返回函数可以将一些计算延迟执行。例如，定义一个普通的求和函数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_sum</span><span class="params">(lst)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> sum(lst)</span><br></pre></td></tr></table></figure></p>
+<p>调用<code>calc_sum()</code>函数时，将立刻计算并得到结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc_sum([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"><span class="number">10</span></span><br></pre></td></tr></table></figure></p>
+<p>但是，如果返回一个函数，就可以延迟计算：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_sum</span><span class="params">(lst)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">lazy_sum</span><span class="params">()</span>:</span></span><br><span class="line">		<span class="keyword">return</span> sum(lst)</span><br><span class="line">	<span class="keyword">return</span> lazy_sum</span><br></pre></td></tr></table></figure></p>
+<p>调用<code>calc_sum()</code>函数并没有计算出结果，对返回的函数进行调用时才得到结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f=calc_sum([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f</span><br><span class="line">&lt;function g at <span class="number">0x0000000002CC20B8</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f()</span><br><span class="line"><span class="number">10</span></span><br></pre></td></tr></table></figure></p>
+<p>此时由于可以返回函数，我们在后续的代码里就可以决定何时调用该函数。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p>请编写一个函数<code>calc_prod(lst)</code>，参数为<code>list</code>，返回值为计算参数元素乘积的函数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_prod</span><span class="params">(lst)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">lazy_prod</span><span class="params">()</span>:</span></span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x, y)</span>:</span></span><br><span class="line">			<span class="keyword">return</span> x * y</span><br><span class="line">		<span class="keyword">return</span> reduce(f, lst, <span class="number">1</span>)</span><br><span class="line">	<span class="keyword">return</span> lazy_load</span><br></pre></td></tr></table></figure></p>
+<p>测试：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f=calc_prod([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> f()</span><br><span class="line"><span class="number">24</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>在函数内部定义的函数和外部定义的函数是一样的，只是它们无法被外部访问。例如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">print</span> <span class="string">'g()...'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">print</span> <span class="string">'f()...'</span></span><br><span class="line">	<span class="keyword">return</span> g</span><br></pre></td></tr></table></figure></p>
+<p>而将<code>g</code>的定义移入函数<code>f</code>内部，可以防止其他代码调用<code>g</code>：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">print</span> <span class="string">'f()...'</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">		<span class="keyword">print</span> <span class="string">'g()...'</span></span><br><span class="line">	<span class="keyword">return</span> g</span><br></pre></td></tr></table></figure></p>
+<p>但是，考察上一节定义的<code>calc_sum()</code>函数，发现无法把<code>lazy_sum</code>移动到<code>calc_sum</code>外部，因为它引用了<code>calc_sum</code>函数的参数。</p>
+<p>像这种，内层函数引用外层函数（定义内层函数的环境中的）局部变量，然后返回内层函数的情况，称为闭包（Closure）。</p>
+<p>闭包的特点是，返回函数引用了外层函数的局部变量。<strong>所以，要正确使用闭包，需要确保引用的局部变量在返回函数后不能改变。</strong>例如，希望一次返回三个函数分别计算<code>1*1</code>，<code>2*2</code>，<code>3*3</code>：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">()</span>:</span></span><br><span class="line">	fs=[]</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>):</span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">			<span class="keyword">return</span> i*i</span><br><span class="line">		fs.append(f)</span><br><span class="line">	<span class="keyword">return</span> fs</span><br></pre></td></tr></table></figure></p>
+<p>然而调用结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1, f2, f3=count()</span><br><span class="line">&gt;&gt;&gt;f1()</span><br><span class="line"><span class="number">9</span></span><br><span class="line">&gt;&gt;&gt;f2()</span><br><span class="line"><span class="number">9</span></span><br><span class="line">&gt;&gt;&gt;f3()</span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure></p>
+<p>原因就是当<code>count()</code>函数返回了三个函数时，这三个函数所引用的变量<code>i</code>的值已经变成了<code>3</code>。由于<code>f1</code>，<code>f2</code>，<code>f3</code>并没有被调用，所以此时它们并未计算<code>i*i</code>，当各个函数被调用时<code>i</code>值为<code>3</code>，所以函数都会返回<code>9</code>。<br>因此，返回函数不要引用任何循环变量，或者后续会发生变化的任何变量。</p>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><p>改写<code>count()</code>函数，使其返回能正确计算<code>1*1</code>，<code>2*2</code>，<code>3*3</code>的函数。</p>
+<p>考察下面的函数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(j)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">		<span class="keyword">return</span> j*j</span><br><span class="line">	<span class="keyword">return</span> g</span><br></pre></td></tr></table></figure></p>
+<p>它可以正确地返回一个函数<code>g</code>，<code>g</code>所引用的变量<code>j</code>不是循环变量，因此将正常执行。在<code>count()</code>函数循环内部，如果借助<code>f</code>函数，就可以避免引用循环变量<code>i</code>。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">()</span>:</span></span><br><span class="line">	fs=[]</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>):</span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(j)</span>:</span></span><br><span class="line">			<span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">				<span class="keyword">return</span> j*j</span><br><span class="line">			<span class="keyword">return</span> g</span><br><span class="line">		r=f(i)</span><br><span class="line">		fs.append(r)</span><br><span class="line">	<span class="keyword">return</span> fs</span><br></pre></td></tr></table></figure></p>
+<p>调用返回函数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1, f2, f3=count()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> f1(), f2(), f3</span><br><span class="line"><span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span></span><br></pre></td></tr></table></figure></p>
+
+                </div>
+
+                <!-- post share -->
+                <div class="post-share">
+                    <div class="share-sina-weibo">
+                        <a class="fa fa-weibo" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var f='http://service.weibo.com/share/share.php?appkey=2241392681&searchPic=true',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();})(screen,document,encodeURIComponent,'','','','','',''));"></a>
+                    </div>
+
+                    <div class="share-tencent-wechat">
+                        <a class="fa fa-wechat" href="javascript:void(0)" id="popup"></a>
+                    </div>
+                </div>
+            </div><!-- end of post-container -->
+        </div>
+
+
+        <!-- post toc(table of content) -->
+        <div class="col-xs-1 col-sm-2 col-md-2 col-lg-3">
+            <div class="post-toc">
+                <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#返回函数"><span class="nav-text">返回函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例1"><span class="nav-text">示例1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包"><span class="nav-text">闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例2"><span class="nav-text">示例2</span></a></li></ol></li></ol>
+            </div>
+        </div><!-- end of post toc -->
+
+    </div><!-- end of row -->
+</div><!-- end of container-fluid -->
+
+  <!-- website footer -->
+
+<div class="post-footer">
+  <p class="footer-copyright">&copy;&nbsp;2017-2018&nbsp;itongworld</p>
+  <p class="footer-poweredby">Powered by <a href="https://github.com/itongworld">Snow</a> and <a href="https://hexo.io/">Hexo</a></p>
+</div>
+
+<!-- qrcode pop-up dialog -->
+<div class="dialog-modal" id="dialog-modal">
+    <a href="javascript:void(0)" title="关闭" id="popup-close"><i class="fa fa-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+        <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&choe=UTF-8&chld=L|1&chl=http://weibo.com/ttarticle/p/show?id=2309404054181588669991#_0" alt="二维码生成失败 :(" id="share-qrcode">
+    </div>
+</div>
+
+<!-- global mask -->
+<div class="mask" id="mask"></div>
+
+
+
+
+<script src="/js/jquery.js"></script>
+<script src="/js/script.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+<!-- <script type="text/javascript" async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script> -->
+<script type="text/javascript">
+
+    $(function() {
+
+
+        //index和post页面都有post-content类。blog-post下的post-content类是index页面的，post-container下的post-content类是post页面的。
+        //这段代码要放在最前面设置好图片相应宽度。
+        //$(".post-container .post-content p img[alt]").each(function(){
+        $(".post-content p img[alt]").each(function(){
+
+            var altstr = $(this).attr("alt");
+            //alert(altstr);
+
+            if(altstr.endsWith("-1gg")){
+                $(this).addClass("gg1");
+            }
+
+            else if(altstr.endsWith("-2gg")){
+                $(this).addClass("gg2");
+            }
+
+            else if(altstr.endsWith("-3gg")){
+                $(this).addClass("gg3");
+            }
+            else{
+                $(this).addClass("gg1");
+                altstr += "-1gg";
+                $(this).attr("alt", altstr);
+            }
+
+            //add title
+            $(this).attr("title", altstr.substring(0, altstr.length-4));
+
+        });
+
+
+
+        //设置图片初始相应高度。
+        $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+        //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+        // $(window).load(function() {
+        //
+        //   $(".post-content p img").height($(".post-content p img").width());
+        //   //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //   console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //
+        // });
+
+
+        $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+        //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+        //Gallery
+        $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+
+
+
+        //设置图片缩放相应高度。
+        $(window).resize(function() {
+            $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+            //alert($(".post-content p img").width() + ", " + $(".post-content p img").height())
+            //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+
+            $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+            //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+            //Gallery
+            $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+        });
+
+
+
+    });
+
+
+</script>
+
+
+
+
+  <script type="text/javascript">
+    $(function () {
+
+        $('body').scrollspy({
+            target: '.post-toc',
+            offset: 10
+        });
+
+        var $win = $(window);
+        var itemOffsetTop = $(".post-banner").offset().top;
+        var itemOuterHeight = $(".post-banner").outerHeight();
+        var winHeight = $win.height();
+        $win.scroll(function () {
+            var winScrollTop = $win.scrollTop();
+            if(!(winScrollTop > itemOffsetTop+itemOuterHeight) && !(winScrollTop < itemOffsetTop-winHeight)) {
+                // console.log('出现了');
+                $(".post-toc").removeClass("f");
+            } else {
+                // console.log('消失了');
+                $(".post-toc").addClass("f")
+            }
+        });
+
+        $("#popup").click(function(){
+            $("#dialog-modal").addClass("in");
+            $("#mask").addClass("in");
+        });
+
+        $("#mask").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+        });
+
+
+        $("#popup-close").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+
+        });
+
+    });
+
+  </script>
+
+
+
+
+</body>
+</html>

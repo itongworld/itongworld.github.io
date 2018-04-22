@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Head template -->
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Description -->
+    
+        <meta name="description" content="欧阳童的个人博客——学习，总结，提升">
+    
+
+    <!-- Keywords -->
+    
+        <meta name="keywords" content="Computer Vision, Deep Learning, Machine Learning, Python, Hexo, Snow">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="itongworld, itongworld@gmail.com">
+    
+
+    <!-- Favicon -->
+    
+        <link rel="icon" href="/favicon.png" type="image/x-icon">
+    
+
+
+    <!-- Title -->
+    
+    <title>
+      
+        快速排序 - 
+        欧阳阳阳的个人博客
+    </title>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fa_css/fa.css">
+
+
+
+
+    <!-- Different css styles for different templates -->
+    
+      <link rel="stylesheet" href="/css/post.css">
+    
+
+
+</head>
+
+<body>
+
+<!-- main content -->
+<div class="post-banner">
+    <div class="banner-background" style="background-size: cover;background-image: url('/img/default_post_cover.png');"></div>
+</div>
+
+<div class="post-title">
+    <h1>快速排序</h1>
+    <div class="post-meta">
+            <span class="meta-entity">
+                
+                
+                <span class="meta-date">Sep 09, 2017</span>
+            </span>
+            <span class="meta-entity">
+                <span class="meta-tags">
+                    
+                      <a href="/tags/基础算法/">基础算法</a>
+                    
+                      <a href="/tags/数据结构/">数据结构</a>
+                    
+                </span>
+            </span>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- post container in the very middle -->
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+
+            <!-- post container: containing content, share -->
+            <div class="post-container">
+
+                <!-- post content -->
+                <div class="post-content">
+                    <p>快速排序的经典应用。<br><a id="more"></a></p>
+<p>排序算法中有很多解决问题的优秀思想。快速排序就是其中之一。<br>快速排序在遍历一遍数据集后，可以将数据集按照某种数据属性明确地区分开。</p>
+<h2 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h2><h3 id="1-顺序存储结构"><a href="#1-顺序存储结构" class="headerlink" title="1. 顺序存储结构"></a>1. 顺序存储结构</h3><p>递归实现算法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Recursive Solution</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quicksort</span><span class="params">(nums, low, high)</span>:</span></span><br><span class="line">    i = low</span><br><span class="line">    j = high</span><br><span class="line">    <span class="keyword">if</span> i &gt;= j: <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">    pivot = nums[low]</span><br><span class="line">    <span class="keyword">while</span> i &lt; j:</span><br><span class="line">        <span class="keyword">while</span> i &lt; j <span class="keyword">and</span> nums[j] &gt;= pivot:</span><br><span class="line">            j -= <span class="number">1</span></span><br><span class="line">        nums[i] = nums[j]</span><br><span class="line">        <span class="keyword">while</span> i &lt; j <span class="keyword">and</span> nums[i] &lt;= pivot:</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        nums[j] = nums[i]</span><br><span class="line">    nums[i] = pivot</span><br><span class="line">    quicksort(nums, low, i<span class="number">-1</span>)</span><br><span class="line">    quicksort(nums, j+<span class="number">1</span>, high)</span><br></pre></td></tr></table></figure></p>
+<p>非递归实现算法，其实就是用<strong>栈保存每一个待排字序列的首尾元素下标</strong>，某次<code>while</code>循环时取出这个范围，对这段子序列进行<code>partition</code>操作。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Iterative Solution</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(nums, left, right)</span>:</span></span><br><span class="line">    pivot = nums[left]</span><br><span class="line">    <span class="keyword">while</span> left &lt; right:</span><br><span class="line">        <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> nums[right]&gt;=pivot:</span><br><span class="line">            right -= <span class="number">1</span></span><br><span class="line">        nums[left] = nums[right]</span><br><span class="line">        <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> nums[left]&lt;=pivot:</span><br><span class="line">            left += <span class="number">1</span></span><br><span class="line">        nums[right] = nums[left]</span><br><span class="line">    nums[left] = pivot</span><br><span class="line">    <span class="keyword">return</span> left</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quicksort</span><span class="params">(nums, left, right)</span>:</span></span><br><span class="line">    tstack = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> left&lt;right:</span><br><span class="line">        tstack.append(right)</span><br><span class="line">        tstack.append(left)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> tstack:</span><br><span class="line">        i = tstack.pop()</span><br><span class="line">        j = tstack.pop()</span><br><span class="line"></span><br><span class="line">        k = partition(nums, i, j)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i&lt;k<span class="number">-1</span>:</span><br><span class="line">            tstack.append(k<span class="number">-1</span>)</span><br><span class="line">            tstack.append(i)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> j&gt;k+<span class="number">1</span>:</span><br><span class="line">            tstack.append(j)</span><br><span class="line">            tstack.append(i+<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>快速排序<strong>最好情况</strong>下的时间复杂度为$O(n\log_{2}^{n})$，<strong>最坏情况</strong>下的时间复杂度为$O(n^{2})$，<strong>平均情况</strong>下的时间复杂度为$O(n\log_{2}^{n})$。快速排序是<strong>不稳定的</strong>排序算法。</p>
+<h3 id="2-链式存储结构"><a href="#2-链式存储结构" class="headerlink" title="2. 链式存储结构"></a>2. 链式存储结构</h3><p>对于单链表排序，想起<a href="https://discuss.leetcode.com/" target="_blank" rel="noopener">LeetCode论坛</a>里的一句话：</p>
+<blockquote>
+<p>Well, life gets difficult pretty soon whenever the same operation on array is transferred to linked list.<br>For God’s sake, don’t try sorting a linked list during the interview.</p>
+</blockquote>
+<p>这里提供三种常用的单链表排序算法，时间复杂度均为$O(n\log_{2}^{n})$。</p>
+<p>第一种方法简单易行，即将单链表转换为顺序表进行排序。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sort_linkedlist</span><span class="params">(self, head)</span>:</span></span><br><span class="line">    l = head</span><br><span class="line">    llist = []</span><br><span class="line">    <span class="keyword">while</span> l:</span><br><span class="line">        llist.append(l.val)</span><br><span class="line">        l = l.next</span><br><span class="line"></span><br><span class="line">    llist.sort()</span><br><span class="line">    l = head</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> l:</span><br><span class="line">        l.val = llist[i]</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">        l = l.next</span><br><span class="line">    <span class="keyword">return</span> head</span><br></pre></td></tr></table></figure></p>
+<p>其次可以考虑使用归并排序。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mergesort_linkedlist</span><span class="params">(self, head)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> head <span class="keyword">or</span> <span class="keyword">not</span> head.next:</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line">    <span class="comment">#step 1. cut the list to two halves</span></span><br><span class="line">    prev=<span class="keyword">None</span></span><br><span class="line">    slow=fast=head</span><br><span class="line">    <span class="keyword">while</span> fast <span class="keyword">and</span> fast.next:</span><br><span class="line">        prev=slow</span><br><span class="line">        slow=slow.next</span><br><span class="line">        fast=fast.next.next</span><br><span class="line">    prev.next=<span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#step 2. sort each half</span></span><br><span class="line">    l1=self.mergesort_linkedlist(head)</span><br><span class="line">    l2=self.mergesort_linkedlist(slow)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#step 3. merge l1 and l2</span></span><br><span class="line">    <span class="keyword">return</span> self.merge(l1, l2)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(self, l1, l2)</span>:</span></span><br><span class="line">    <span class="string">"""Merge two sorted lists."""</span></span><br><span class="line">    dummy = cur = ListNode(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">while</span> l1 <span class="keyword">and</span> l2:</span><br><span class="line">        <span class="keyword">if</span> l1.val &lt; l2.val:</span><br><span class="line">            cur.next = l1</span><br><span class="line">            l1 = l1.next</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur.next = l2</span><br><span class="line">            l2 = l2.next</span><br><span class="line">        cur = cur.next</span><br><span class="line">    cur.next = l1 <span class="keyword">or</span> l2</span><br><span class="line">    <span class="keyword">return</span> dummy.next</span><br></pre></td></tr></table></figure></p>
+<p>第三种方法使用快速排序。因为是链表结构，所以使用值交换。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quicksort_linkedlist</span><span class="params">(self, head, end=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> head != end:</span><br><span class="line">        p = self.getPartition(head, end)</span><br><span class="line">        self.quicksort_linkedlist(head, p)</span><br><span class="line">        self.quicksort_linkedlist(p.next, end)</span><br><span class="line">    <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPartition</span><span class="params">(self, begin, end)</span>:</span></span><br><span class="line">    keyvalue = begin.val</span><br><span class="line">    p = begin</span><br><span class="line">    q = p.next</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> q != end:</span><br><span class="line">        <span class="keyword">if</span> q.val &lt; keyvalue:</span><br><span class="line">            p = p.next</span><br><span class="line">            p.val, q.val, = q.val, p.val</span><br><span class="line">        q = q.next</span><br><span class="line">    begin.val, p.val = p.val, begin.val</span><br><span class="line">    <span class="keyword">return</span> p</span><br></pre></td></tr></table></figure></p>
+<p>这种方法在数据集中有很多重复支点值时效率比较低，此时可以使用<strong>三段快速排序</strong>改进，即将数据集中相同支点值的所有结点连接成第三段。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quicksort_linkedlist_i</span><span class="params">(self, head)</span>:</span></span><br><span class="line">    hat = ListNode(<span class="keyword">None</span>)</span><br><span class="line">    hat.next = head</span><br><span class="line">    self.quick_sort(hat, <span class="keyword">None</span>)</span><br><span class="line">    <span class="keyword">return</span> hat.next</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(self, hat, tail)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> hat.next <span class="keyword">is</span> tail <span class="keyword">or</span> hat.next.next <span class="keyword">is</span> tail:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    hat1, hat2, hat3 = hat, hat.next, ListNode(<span class="keyword">None</span>)</span><br><span class="line">    tail1, tail2, tail3 = hat1, hat2, hat3</span><br><span class="line">    p, pivot = hat2.next, hat2.val</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> p <span class="keyword">is</span> <span class="keyword">not</span> tail:</span><br><span class="line">        <span class="keyword">if</span> p.val &lt; pivot:</span><br><span class="line">            <span class="comment"># tail1.next = p</span></span><br><span class="line">            <span class="comment"># tail1 = tail1.next</span></span><br><span class="line">            <span class="comment"># p = p.next</span></span><br><span class="line">            tail1.next, tail1, p = p, p, p.next</span><br><span class="line">        <span class="keyword">elif</span> p.val == pivot:</span><br><span class="line">            <span class="comment"># tail2.next = p</span></span><br><span class="line">            <span class="comment"># tail2 = tail2.next</span></span><br><span class="line">            <span class="comment"># p = p.next</span></span><br><span class="line">            tail2.next, tail2, p = p, p, p.next</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># tail3.next = p</span></span><br><span class="line">            <span class="comment"># tail3 = tail3.next</span></span><br><span class="line">            <span class="comment"># p = p.next</span></span><br><span class="line">            tail3.next, tail3, p = p, p, p.next</span><br><span class="line"></span><br><span class="line">    tail3.next = tail</span><br><span class="line">    tail2.next = hat3.next</span><br><span class="line">    tail1.next = hat2</span><br><span class="line"></span><br><span class="line">    self.quick_sort(hat1, hat2)</span><br><span class="line">    self.quick_sort(tail2, tail)</span><br></pre></td></tr></table></figure></p>
+<h2 id="top-K问题"><a href="#top-K问题" class="headerlink" title="top K问题"></a>top K问题</h2><h3 id="1-堆排序求解top-K问题"><a href="#1-堆排序求解top-K问题" class="headerlink" title="1. 堆排序求解top K问题"></a>1. 堆排序求解top K问题</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GetLargestK</span><span class="params">(self, tinput, k)</span>:</span></span><br><span class="line">    ret = []</span><br><span class="line">    <span class="keyword">if</span> len(tinput) &lt; k <span class="keyword">or</span> <span class="keyword">not</span> tinput:</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># index starts from 0</span></span><br><span class="line">    n = len(tinput) - <span class="number">1</span></span><br><span class="line">    i = (k / <span class="number">2</span>) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> i &gt;= <span class="number">0</span>:</span><br><span class="line">        self.buildheap(tinput, i, k - <span class="number">1</span>)</span><br><span class="line">        i -= <span class="number">1</span></span><br><span class="line">    i = k</span><br><span class="line">    <span class="keyword">while</span> i &lt;= n:</span><br><span class="line">        <span class="keyword">if</span> tinput[<span class="number">0</span>] &lt; tinput[i]:</span><br><span class="line">            tinput[<span class="number">0</span>], tinput[i] = tinput[i], tinput[<span class="number">0</span>]</span><br><span class="line">            self.buildheap(tinput, <span class="number">0</span>, k - <span class="number">1</span>)</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(k):</span><br><span class="line">        ret.append(tinput[i])</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="comment"># min-heap</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">buildheap</span><span class="params">(self, nums, low, high)</span>:</span></span><br><span class="line">    t = nums[low]</span><br><span class="line">    i = low</span><br><span class="line">    j = <span class="number">2</span> * low + <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> j &lt;= high:</span><br><span class="line">        <span class="keyword">if</span> j &lt; high <span class="keyword">and</span> nums[j] &gt; nums[j + <span class="number">1</span>]:</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> t &gt; nums[j]:</span><br><span class="line">            nums[i] = nums[j]</span><br><span class="line">            i = j</span><br><span class="line">            j = j * <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    nums[i] = t</span><br></pre></td></tr></table></figure>
+<p><strong>求解top K时应使用小顶堆，堆中只有K个元素。</strong>算法的时间复杂度为$O(n\log_{2}^{k})$。</p>
+<h3 id="2-快速排序求解top-K问题"><a href="#2-快速排序求解top-K问题" class="headerlink" title="2. 快速排序求解top K问题"></a>2. 快速排序求解top K问题</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GetLargestK</span><span class="params">(self, tinput, k)</span>:</span></span><br><span class="line">    ret = []</span><br><span class="line">    <span class="keyword">if</span> len(tinput) &lt; k:</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    self.findKth(tinput, k)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(k):</span><br><span class="line">        ret.append(tinput[i])</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findKth</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">    i, j = <span class="number">0</span>, len(nums)<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#or while i&lt;j:</span></span><br><span class="line">    <span class="keyword">while</span> i &lt;= j:</span><br><span class="line">        pos = self.partition(nums, i, j)</span><br><span class="line">        <span class="keyword">if</span> pos == k<span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">elif</span> pos &lt; k<span class="number">-1</span>:</span><br><span class="line">            i = pos + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            j = pos - <span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self, nums, low, high)</span>:</span></span><br><span class="line">    p = nums[low]</span><br><span class="line">    i = low + <span class="number">1</span></span><br><span class="line">    j = high</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> i &lt;= j:</span><br><span class="line">        <span class="keyword">if</span> nums[i] &gt; p <span class="keyword">and</span> nums[j] &lt; p:</span><br><span class="line">            nums[i], nums[j] = nums[j], nums[i]</span><br><span class="line">        <span class="keyword">if</span> nums[i] &lt;= p: i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> nums[j] &gt;= p: j -= <span class="number">1</span></span><br><span class="line">    nums[low], nums[j] = nums[j], nums[low]</span><br><span class="line">    <span class="keyword">return</span> j</span><br></pre></td></tr></table></figure>
+<p>改进的快速排序算法求解top K问题，最好情况下的时间复杂度为$O(n)$，最坏情况下的时间复杂度为$O(n^{2})$。</p>
+<h2 id="数组中第K大的数字"><a href="#数组中第K大的数字" class="headerlink" title="数组中第K大的数字"></a>数组中第K大的数字</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">    left, right=<span class="number">0</span>, len(nums)<span class="number">-1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">#or while True:</span></span><br><span class="line">    <span class="keyword">while</span> left&lt;=right:</span><br><span class="line"></span><br><span class="line">        pos = self.partition(nums, left, right)</span><br><span class="line">        <span class="keyword">if</span> pos == k<span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums[pos]</span><br><span class="line">        <span class="keyword">if</span> pos &gt; k<span class="number">-1</span>:</span><br><span class="line">            right=pos<span class="number">-1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            left=pos+<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self, nums, left, right)</span>:</span></span><br><span class="line">    pivot=nums[left]</span><br><span class="line">    l=left+<span class="number">1</span></span><br><span class="line">    r=right</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> l&lt;=r:</span><br><span class="line">        <span class="keyword">if</span> nums[l]&lt;pivot <span class="keyword">and</span> nums[r]&gt;pivot:</span><br><span class="line">            nums[l], nums[r] = nums[r], nums[l]</span><br><span class="line">        <span class="keyword">if</span> nums[l]&gt;=pivot:</span><br><span class="line">            l+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> nums[r]&lt;=pivot:</span><br><span class="line">            r-=<span class="number">1</span></span><br><span class="line">    nums[left], nums[r]=nums[r], nums[left]</span><br><span class="line">    <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+<p>此问题完全等价于top K问题。最好情况下的时间复杂度为$O(n)$，最坏情况下的时间复杂度为$O(n^{2})$。</p>
+<h2 id="数组中出现次数超过一半的数字"><a href="#数组中出现次数超过一半的数字" class="headerlink" title="数组中出现次数超过一半的数字"></a>数组中出现次数超过一半的数字</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">MoreThanHalfNum_Solution</span><span class="params">(self, numbers)</span>:</span></span><br><span class="line">    k = (len(numbers) / <span class="number">2</span>) + <span class="number">1</span></span><br><span class="line">    ret = self.findKth(numbers, k)</span><br><span class="line">    c = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> numbers:</span><br><span class="line">        <span class="keyword">if</span> x == ret:</span><br><span class="line">            c += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> [<span class="number">0</span>, ret][c &gt;= k]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findKth</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">    n = len(nums)</span><br><span class="line">    i, j = <span class="number">0</span>, n - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#or while True:</span></span><br><span class="line">    <span class="keyword">while</span> i&lt;=j:</span><br><span class="line">        pos = self.partition(nums, i, j)</span><br><span class="line">        <span class="keyword">if</span> pos == k - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums[pos]</span><br><span class="line">        <span class="keyword">elif</span> pos &lt; k - <span class="number">1</span>:</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            j -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self, nums, left, right)</span>:</span></span><br><span class="line">    pivot = nums[left]</span><br><span class="line">    l = left + <span class="number">1</span></span><br><span class="line">    r = right</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> l &lt;= r:</span><br><span class="line">        <span class="comment"># print nums</span></span><br><span class="line">        <span class="keyword">if</span> nums[l] &lt; pivot <span class="keyword">and</span> nums[r] &gt; pivot:</span><br><span class="line">            nums[l], nums[r] = nums[r], nums[l]</span><br><span class="line">        <span class="keyword">if</span> nums[l] &gt;= pivot:</span><br><span class="line">            l += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> nums[r] &lt;= pivot:</span><br><span class="line">            r -= <span class="number">1</span></span><br><span class="line">    nums[left], nums[r] = nums[r], nums[left]</span><br><span class="line">    <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+<p>即求第$\lfloor\frac{len(nums)}{2}\rfloor+1$大的数字。最好情况下的时间复杂度为$O(n)$，最坏情况下的时间复杂度为$O(n^{2})$。</p>
+<p>此外，有另一种时间复杂度为$O(n)$的算法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">MoreThanHalfNumber</span><span class="params">(self, numbers)</span>:</span></span><br><span class="line">    n = len(numbers)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> n:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    num = numbers[<span class="number">0</span>]</span><br><span class="line">    counter = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>, n):</span><br><span class="line">        <span class="keyword">if</span> numbers[i] == num:</span><br><span class="line">            counter += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            counter -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">0</span>:</span><br><span class="line">            num = numbers[i]</span><br><span class="line">            counter = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># verify the num</span></span><br><span class="line">    counter = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> numbers:</span><br><span class="line">        <span class="keyword">if</span> x == num: counter += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> counter &gt; n / <span class="number">2</span>: <span class="keyword">return</span> num</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+
+                </div>
+
+                <!-- post share -->
+                <div class="post-share">
+                    <div class="share-sina-weibo">
+                        <a class="fa fa-weibo" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var f='http://service.weibo.com/share/share.php?appkey=2241392681&searchPic=true',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();})(screen,document,encodeURIComponent,'','','','','',''));"></a>
+                    </div>
+
+                    <div class="share-tencent-wechat">
+                        <a class="fa fa-wechat" href="javascript:void(0)" id="popup"></a>
+                    </div>
+                </div>
+            </div><!-- end of post-container -->
+        </div>
+
+
+        <!-- post toc(table of content) -->
+        <div class="col-xs-1 col-sm-2 col-md-2 col-lg-3">
+            <div class="post-toc">
+                <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本算法"><span class="nav-text">基本算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-顺序存储结构"><span class="nav-text">1. 顺序存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-链式存储结构"><span class="nav-text">2. 链式存储结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top-K问题"><span class="nav-text">top K问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-堆排序求解top-K问题"><span class="nav-text">1. 堆排序求解top K问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-快速排序求解top-K问题"><span class="nav-text">2. 快速排序求解top K问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组中第K大的数字"><span class="nav-text">数组中第K大的数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组中出现次数超过一半的数字"><span class="nav-text">数组中出现次数超过一半的数字</span></a></li></ol>
+            </div>
+        </div><!-- end of post toc -->
+
+    </div><!-- end of row -->
+</div><!-- end of container-fluid -->
+
+  <!-- website footer -->
+
+<div class="post-footer">
+  <p class="footer-copyright">&copy;&nbsp;2017-2018&nbsp;itongworld</p>
+  <p class="footer-poweredby">Powered by <a href="https://github.com/itongworld">Snow</a> and <a href="https://hexo.io/">Hexo</a></p>
+</div>
+
+<!-- qrcode pop-up dialog -->
+<div class="dialog-modal" id="dialog-modal">
+    <a href="javascript:void(0)" title="关闭" id="popup-close"><i class="fa fa-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+        <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&choe=UTF-8&chld=L|1&chl=http://weibo.com/ttarticle/p/show?id=2309404054181588669991#_0" alt="二维码生成失败 :(" id="share-qrcode">
+    </div>
+</div>
+
+<!-- global mask -->
+<div class="mask" id="mask"></div>
+
+
+
+
+<script src="/js/jquery.js"></script>
+<script src="/js/script.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+<!-- <script type="text/javascript" async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script> -->
+<script type="text/javascript">
+
+    $(function() {
+
+
+        //index和post页面都有post-content类。blog-post下的post-content类是index页面的，post-container下的post-content类是post页面的。
+        //这段代码要放在最前面设置好图片相应宽度。
+        //$(".post-container .post-content p img[alt]").each(function(){
+        $(".post-content p img[alt]").each(function(){
+
+            var altstr = $(this).attr("alt");
+            //alert(altstr);
+
+            if(altstr.endsWith("-1gg")){
+                $(this).addClass("gg1");
+            }
+
+            else if(altstr.endsWith("-2gg")){
+                $(this).addClass("gg2");
+            }
+
+            else if(altstr.endsWith("-3gg")){
+                $(this).addClass("gg3");
+            }
+            else{
+                $(this).addClass("gg1");
+                altstr += "-1gg";
+                $(this).attr("alt", altstr);
+            }
+
+            //add title
+            $(this).attr("title", altstr.substring(0, altstr.length-4));
+
+        });
+
+
+
+        //设置图片初始相应高度。
+        $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+        //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+        // $(window).load(function() {
+        //
+        //   $(".post-content p img").height($(".post-content p img").width());
+        //   //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //   console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //
+        // });
+
+
+        $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+        //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+        //Gallery
+        $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+
+
+
+        //设置图片缩放相应高度。
+        $(window).resize(function() {
+            $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+            //alert($(".post-content p img").width() + ", " + $(".post-content p img").height())
+            //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+
+            $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+            //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+            //Gallery
+            $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+        });
+
+
+
+    });
+
+
+</script>
+
+
+
+
+  <script type="text/javascript">
+    $(function () {
+
+        $('body').scrollspy({
+            target: '.post-toc',
+            offset: 10
+        });
+
+        var $win = $(window);
+        var itemOffsetTop = $(".post-banner").offset().top;
+        var itemOuterHeight = $(".post-banner").outerHeight();
+        var winHeight = $win.height();
+        $win.scroll(function () {
+            var winScrollTop = $win.scrollTop();
+            if(!(winScrollTop > itemOffsetTop+itemOuterHeight) && !(winScrollTop < itemOffsetTop-winHeight)) {
+                // console.log('出现了');
+                $(".post-toc").removeClass("f");
+            } else {
+                // console.log('消失了');
+                $(".post-toc").addClass("f")
+            }
+        });
+
+        $("#popup").click(function(){
+            $("#dialog-modal").addClass("in");
+            $("#mask").addClass("in");
+        });
+
+        $("#mask").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+        });
+
+
+        $("#popup-close").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+
+        });
+
+    });
+
+  </script>
+
+
+
+
+</body>
+</html>

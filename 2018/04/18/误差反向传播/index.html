@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Head template -->
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Description -->
+    
+        <meta name="description" content="欧阳童的个人博客——学习，总结，提升">
+    
+
+    <!-- Keywords -->
+    
+        <meta name="keywords" content="Computer Vision, Deep Learning, Machine Learning, Python, Hexo, Snow">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="itongworld, itongworld@gmail.com">
+    
+
+    <!-- Favicon -->
+    
+        <link rel="icon" href="/favicon.png" type="image/x-icon">
+    
+
+
+    <!-- Title -->
+    
+    <title>
+      
+        误差反向传播 - 
+        欧阳阳阳的个人博客
+    </title>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fa_css/fa.css">
+
+
+
+
+    <!-- Different css styles for different templates -->
+    
+      <link rel="stylesheet" href="/css/post.css">
+    
+
+
+</head>
+
+<body>
+
+<!-- main content -->
+<div class="post-banner">
+    <div class="banner-background" style="background-size: cover;background-image: url('/img/default_post_cover.png');"></div>
+</div>
+
+<div class="post-title">
+    <h1>误差反向传播</h1>
+    <div class="post-meta">
+            <span class="meta-entity">
+                
+                
+                <span class="meta-date">Apr 18, 2018</span>
+            </span>
+            <span class="meta-entity">
+                <span class="meta-tags">
+                    
+                      <a href="/tags/人工智能/">人工智能</a>
+                    
+                      <a href="/tags/深度学习/">深度学习</a>
+                    
+                </span>
+            </span>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- post container in the very middle -->
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+
+            <!-- post container: containing content, share -->
+            <div class="post-container">
+
+                <!-- post content -->
+                <div class="post-content">
+                    <p>前向传播算法（Forward Propagation）和误差反向传播算法（Back Propagation of Errors）是神经网络模型训练过程中最基本的两个步骤。误差反向传播算法最早在20世纪70年代被人们提出，但当时并未引起学者们的过多重视。1986年David Rumelhart、Geoffrey Hinton和Ronald Williams联合发表论文<a href="https://www.nature.com/articles/323533a0.pdf" target="_blank" rel="noopener"><em>Learning representations by back-propagating errors</em></a>，为Backpropagation算法正名。</p>
+<a id="more"></a>
+<h1 id="全连接神经网络"><a href="#全连接神经网络" class="headerlink" title="全连接神经网络"></a>全连接神经网络</h1><h2 id="前向传播算法"><a href="#前向传播算法" class="headerlink" title="前向传播算法"></a>前向传播算法</h2><p>对于全连接神经网络中第$l$层第$j$个神经元来说，其激活值$a^l_j$为：</p>
+<p>\begin{equation}<br>\tag{1}<br>\label{eqn_forwardpropagation_elementwise}<br>    a^{l}_j = \sigma \left( \sum_k w^{l}_{jk} a^{l-1}_k + b^{l}_j \right),<br>\end{equation}</p>
+<p>在上面的公式\eqref{eqn_forwardpropagation_elementwise}中，$w^l_{kj}$表示从第$l-1$层第$k$个神经元指向第$l$层第$j$个神经元的权重。有的书中会以$w^l_{kj}$来表示相应的权重，考虑数学中列向量的表示方式，为了公式简洁方便，这里采用第一种权重表示方法，即$w^l_{kj}$。$b^l_j$表示第$l$层第$j$个神经元的偏置项，也可以将神经元的偏置项视为激活值为$b^l_j$，权重为$1$的上一层的一个神经元。$\sigma$表示神经元的激活函数。</p>
+<p>以上计算单个神经元激活值的公式可以整理为<strong>矩阵表达</strong>的形式。设$w^l$为第$l-1$层到第$l$层的权重矩阵，因而这个矩阵的格式是$[j \times k]$，即$[output_{nodes} \times input_{nodes}]$，设$a^l$和$b^l$分别为第$l$层的激活向量和偏置向量，则计算第$l$层神经元的激活向量为：<br>\begin{equation}<br>\tag{2}<br>\label{eqn_forwardpropagation_matrix}<br>    a^l = \sigma (w^l a^{l-1} + b^l),<br>\end{equation}<br>\begin{equation}<br>\tag{3}<br>\label{eqn_forwardpropagation_weightedinput_matrix}<br>    z^l \equiv w^l a^{l-1} + b^l,<br>\end{equation}<br>\begin{equation}<br>\tag{4}<br>\label{eqn_forwardpropagation}<br>    a^l = \sigma (z^l).<br>\end{equation}</p>
+<p>其中，激活函数$\sigma$作用在向量的每个元素上。$z^l$为第$l$层的输入向量，因而第$l$层第$j$个神经元的输入值为：<br>\begin{equation}<br>\tag{5}<br>\label{eqn_forwardpropagation_weightedinput_elementwise}<br>    z^l_j = \sum_k w^l_{jk} a^{l-1}_k+b^l_j.<br>\end{equation}</p>
+<h2 id="误差反向传播算法"><a href="#误差反向传播算法" class="headerlink" title="误差反向传播算法"></a>误差反向传播算法</h2><h3 id="1-引言"><a href="#1-引言" class="headerlink" title="1.引言"></a>1.引言</h3><p>在神经网络优化算法中，梯度下降（Gradient Descent）算法作为一种常用的优化算法，其通过观察<strong>损失函数的变化与自变量的变化之间的关系</strong>，逐步<strong>在损失函数的梯度方向上改变自变量的取值</strong>，使得特定问题下<strong>损失函数梯度和损失函数值逐渐下降，逐渐达到收敛</strong>。</p>
+<p>因而，在对损失函数进行优化时需要计算损失函数的梯度向量，进而优化参数的取值，对于一般对损失函数而言，例如线性回归等，这并不是一个复杂的问题。但对于神经网络，尤其是复杂的神经网络而言，无法准确地直接写出损失函数关于每个参数的完整计算公式和偏导计算公式。</p>
+<p>如果将损失函数视为权重参数$w_1, w_2, …$的函数，即$C=C(w)$，若要计算权重参数$w_j$的偏导数$\partial C / \partial w_j$，则按照偏导数定义有，</p>
+<p>\begin{equation}<br>\tag{6}<br>\label{eqn_partialderivatives}<br>    \frac{\partial C}{\partial w_j} \approx \frac{C(w + \epsilon e_j) - C(w)}{\epsilon}.<br>\end{equation}</p>
+<p>其中，$\epsilon&gt;0$且趋于$0$，$e_j$是权重参数向量$j$方向上的单位向量。即可以通过计算损失函数关于两个稍微不同的$w_j$的值来估算$\partial C / \partial w_j$的值。对于偏置参数$\partial C / \partial b$也同理。</p>
+<p>这种方法简单且易于实现，但该方法最大的问题是计算效率低，无法在实际中应用。当神经网络中有一百万个权重参数时，对于每个不同的$w_j$都需要计算一次$C(w + \epsilon e_j)$以求得$\partial C / \partial w_j$的值，因此计算损失函数的梯度就需要计算一百万次损失函数的不同值，即每一个训练样本总共计算<strong>一百万+一次（一次计算$C(w)$）</strong>前向传播过程。</p>
+<p>Backpropagation算法是快速求解损失函数的梯度$\partial C / \partial w^l_{jk}$和$\partial C / \partial b^l_j$的一种方法。Backpropagation算法可以在仅仅一次前向传播过程和一次反向传播过程中同时计算所有的$\partial C / \partial w_j$。由于前向传播过程和反向传播过程的时间复杂度大体相同，因而Backpropagation算法仅仅需要<strong>两次</strong>前向传播过程就可以计算出损失函数的梯度，而非上百万次。</p>
+<h3 id="2-误差的定义"><a href="#2-误差的定义" class="headerlink" title="2.误差的定义"></a>2.误差的定义</h3><p>在神经网络的优化过程中，前向传播计算神经元节点激活值，反向传播计算神经元节点误差值（以下简称节点误差值）。</p>
+<p>在神经网络中，定义第$l$层第$j$个神经元的节点误差值为：<br>\begin{equation}<br>\tag{7}<br>\label{eqn_neuronerror}<br>    \delta^l_j \equiv \frac{\partial C}{\partial z^l_j}.<br>\end{equation}</p>
+<p>如果对神经元的输入值$z^l_j$改变$\Delta z^l_j$量（$\Delta z^l_j$量为小量）后，即相应的神经元的激活值变为$\sigma(z^l_j)$，那么损失函数将会改变$\frac{\partial C}{\partial z^l_j} \Delta z^l_j$量。如果$\frac{\partial C}{\partial z^l_j}$值比较大，那么只要$\Delta z^l_j$符号与$\frac{\partial C}{\partial z^l_j}$符号相反，便可以使损失函数值明显降低；相反地，如果$\frac{\partial C}{\partial z^l_j}$接近于$0$，那么改变神经元的输入值$z^l_j$将不会对损失函数值有较大影响。可见$\frac{\partial C}{\partial z^l_j}$值表示是否可以通过该神经元将损失函数值进一步降低，即从某种程度上表示了<strong>该神经元的误差大小</strong>。Backpropagation算法便是通过节点误差值$\delta^l_j$来计算损失函数的权重项梯度$\partial C / \partial w^l_{jk}$和偏置项梯度$\partial C / \partial b^l_j$的。</p>
+<h3 id="3-公式的推导"><a href="#3-公式的推导" class="headerlink" title="3.公式的推导"></a>3.公式的推导</h3><h4 id="输出层的误差公式，-delta-L"><a href="#输出层的误差公式，-delta-L" class="headerlink" title="输出层的误差公式，$\delta^L$"></a><strong>输出层的误差公式，$\delta^L$</strong></h4><p>第$L$层（即输出层）第$j$个神经元的误差公式为：<br>\begin{equation}<br>\tag{BP1, 8}<br>\label{eqn_bp1_elementwise}<br>    \delta^L_j = \frac{\partial C}{\partial a^L_j} \sigma’(z^L_j),<br>\end{equation}</p>
+<p>第$L$层（即输出层）的误差公式为：<br>\begin{equation}<br>\tag{BP1, 9}<br>\label{eqn_bp1_matrix}<br>    \delta^L = \nabla_a C \odot \sigma’(z^L).<br>\end{equation}</p>
+<p>其中，$\odot$称为Hadamard乘积或Schur乘积，即对于向量$s$和向量$t$的Hadamard乘积$s \odot t$有，$(s \odot t)_j = s_j t_j$。</p>
+<p>对于均方误差损失函数（Mean Squared Error）而言，<br>\begin{equation}<br>\tag{10}<br>\label{eqn_mse}<br>    C = \frac{1}{2n} \sum_x ||y(x)-a^L(x)||^2.<br>\end{equation}</p>
+<p>而对于单个训练样本而言，<br>\begin{equation}<br>\tag{11}<br>\label{eqn_singletrainingexample_mse}<br>    C = C_x = \frac{1}{2} ||y-a^L ||^2 = \frac{1}{2} \sum_j (y_j-a^L_j)^2,<br>\end{equation}</p>
+<p>因此$\partial C / \partial a^L_j = (a_j^L-y_j)$，即$\nabla_a C = (a^L-y)$。</p>
+<p>第$L$层（即输出层）的误差公式进一步写为：<br>\begin{equation}<br>\tag{BP1, 12}<br>\label{eqn_bp1_mse}<br>    \delta^L = (a^L-y) \odot \sigma’(z^L).<br>\end{equation}</p>
+<p><strong>证明：</strong><br>对于\eqref{eqn_bp1_elementwise}，应用<strong>复合函数的链式法则</strong>，得到：</p>
+<p>\begin{align}<br>    \delta^L_j &amp; = \sum_k \frac{\partial C}{\partial a^L_k} \frac{\partial a^L_k}{\partial z^L_j} \tag{13}\label{eqn_provebp1_1} \\\\<br>               &amp; = \frac{\partial C}{\partial a^L_j} \frac{\partial a^L_j}{\partial z^L_j} \tag{14}\label{eqn_provebp1_2} \\\\<br>               &amp; = \frac{\partial C}{\partial a^L_j} \sigma’(z^L_j). \tag{15}\label{eqn_provebp1_3}<br>\end{align}</p>
+<p>证毕。</p>
+<h4 id="下层误差-delta-l-1-表示的上层误差公式，-delta-l"><a href="#下层误差-delta-l-1-表示的上层误差公式，-delta-l" class="headerlink" title="下层误差$\delta^{l+1}$表示的上层误差公式，$\delta^l$"></a><strong>下层误差$\delta^{l+1}$表示的上层误差公式，$\delta^l$</strong></h4><p>通过第$l+1$层第$j$个节点误差值计算第$l$层第$j$个节点误差值的误差公式为：<br>\begin{equation}<br>\tag{BP2, 16}<br>\label{eqn_bp2_elementwise}<br>    \delta^l_j = \sum_k w^{l+1}_{kj}  \delta^{l+1}_k \sigma’(z^l_j),<br>\end{equation}</p>
+<p>通过第$l+1$层节点误差值计算第$l$层节点误差值的误差公式为：<br>\begin{equation}<br>\tag{BP2, 17}<br>\label{eqn_bp2_matrix}<br>    \delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma’(z^l).<br>\end{equation}</p>
+<p>这个公式看起来比较直观。等号右边左半部分即是计算下一层的节点误差值通过权重关系得到的上一层的激活误差值，然后根据复合函数的求导公式，即等号右边右半部分便可以根据上一层的激活误差值计算出上一层的节点误差值。即将下一层的节点误差值反向传播到上一层，得到上一层的节点误差值。</p>
+<p>至此，通过\eqref{eqn_bp1_matrix}和\eqref{eqn_bp2_matrix}便可以从神经网络的输出层开始<strong>逐层反向</strong>计算出上一层的节点误差值，从而得到神经网络中任意一层的节点误差值。</p>
+<p><strong>证明：</strong><br>应用复合函数的链式法则，将当前层节点误差值$\delta^l_j = \partial C / \partial z^l_j$根据下一层节点误差值$\delta^{l+1}_k = \partial C / \partial z^{l+1}_k$重写为：<br>\begin{align}<br>    \delta^l_j &amp; = \frac{\partial C}{\partial z^l_j} \tag{18}\label{eqn_provebp2_1} \\\\<br>               &amp; = \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{\partial z^{l+1}_k}{\partial z^l_j} \tag{19}\label{eqn_provebp2_2} \\\\<br>               &amp; = \sum_k \frac{\partial z^{l+1}_k}{\partial z^l_j} \delta^{l+1}_k, \tag{20}\label{eqn_provebp2_3}<br>\end{align}</p>
+<p>而<br>\begin{equation}<br>\tag{21}<br>\label{eqn_provebp2_4}<br>    z^{l+1}_k = \sum_j w^{l+1}_{kj} a^l_j +b^{l+1}_k = \sum_j w^{l+1}_{kj} \sigma(z^l_j) +b^{l+1}_k,<br>\end{equation}</p>
+<p>\begin{equation}<br>\tag{22}<br>\label{eqn_provebp2_5}<br>    \frac{\partial z^{l+1}_k}{\partial z^l_j} = w^{l+1}_{kj} \sigma’(z^l_j),<br>\end{equation}</p>
+<p>带入式\eqref{eqn_provebp2_3}，便得到式\eqref{eqn_bp2_elementwise}，即<br>\begin{equation}<br>\tag{23}<br>\label{eqn_provebp2_6}<br>    \delta^l_j = \sum_k w^{l+1}_{kj}  \delta^{l+1}_k \sigma’(z^l_j).<br>\end{equation}</p>
+<p>证毕。</p>
+<h4 id="偏置项的梯度公式，-frac-partial-C-partial-b-l-j"><a href="#偏置项的梯度公式，-frac-partial-C-partial-b-l-j" class="headerlink" title="偏置项的梯度公式，$\frac{\partial C}{\partial b^l_j}$"></a><strong>偏置项的梯度公式，$\frac{\partial C}{\partial b^l_j}$</strong></h4><p>第$l$层第$j$个神经元的偏置项的梯度公式为：<br>\begin{equation}<br>\tag{BP3, 24}<br>\label{eqn_bp3_elementwise}<br>    \frac{\partial C}{\partial b^l_j} = \delta^l_j,<br>\end{equation}</p>
+<p>第$l$层的偏置项的梯度公式为：<br>\begin{equation}<br>\tag{BP3, 25}<br>\label{eqn_bp3_matrix}<br>    \frac{\partial C}{\partial b^l} = \delta^l.<br>\end{equation}</p>
+<p><strong>证明：</strong><br>应用复合函数的链式法则，证明如下：<br>\begin{align}<br>    \frac{\partial C}{\partial b^l_j} &amp; = \frac{\partial C}{\partial z^l_j} \frac{\partial z^l_j}{\partial b^l_j} \tag{26}\label{eqn_provebp3_1} \\\\<br>                                      &amp; = \delta^l_j \frac{\partial (\sum_k w^l_{jk} a^{l-1}_k+b^l_j)}{\partial b^l_j} \tag{27}\label{eqn_provebp3_2} \\\\<br>                                      &amp; = \delta^l_j. \tag{28}\label{eqn_provebp3_3}<br>\end{align}</p>
+<p>证毕。</p>
+<h4 id="权重项的梯度公式，-frac-partial-C-partial-w-l-jk"><a href="#权重项的梯度公式，-frac-partial-C-partial-w-l-jk" class="headerlink" title="权重项的梯度公式，$\frac{\partial C}{\partial w^l_{jk}}$"></a><strong>权重项的梯度公式，$\frac{\partial C}{\partial w^l_{jk}}$</strong></h4><p>第$l$层第$j$个神经元的权重项的梯度公式为：<br>\begin{equation}<br>\tag{BP4, 29}<br>\label{eqn_bp4_elementwise}<br>    \frac{\partial C}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j,<br>\end{equation}</p>
+<p>第$l$层的权重项的梯度公式为：<br>\begin{equation}<br>\tag{BP4, 30}<br>\label{eqn_bp4_matrix}<br>    \frac{\partial C}{\partial w^l} = \delta^l (a^{l-1})^T.<br>\end{equation}</p>
+<p>\begin{equation}<br>\tag{BP4, 31}<br>\label{eqn_bp4_inout}<br>    \frac{\partial C}{\partial w} = a_{\rm in} \delta_{\rm out}.<br>\end{equation}</p>
+<p>其中，$a_{\rm in}$是权重$w^l_{jk}$输入端神经元的激活值，$\delta_{\rm out}$是权重$w^l_{jk}$输出端神经元的误差值。而从公式\eqref{eqn_bp4_inout}中可以看出，当$a_{\rm in}$比较小，即$a_{\rm in} \approx 0$时，权重项的梯度$\partial C / \partial w$也会变得比较小，因而在梯度下降过程中，这个权重参数学习的较慢。即<strong>低激活值输入的权重学习速度较慢</strong>。</p>
+<p><strong>证明：</strong><br>应用复合函数的链式法则，证明如下：<br>\begin{align}<br>    \frac{\partial C}{\partial w^l_{jk}} &amp; = \frac{\partial C}{\partial z^l_j} \frac{\partial z^l_j}{\partial w^l_{jk}} \tag{32}\label{eqn_provebp4_1} \\\\<br>                                         &amp; = \delta^l_j \frac{\partial (\sum_k w^l_{jk} a^{l-1}_k+b^l_j)}{\partial w^l_{jk}} \tag{33}\label{eqn_provebp4_2} \\\\<br>                                         &amp; = a^{l-1}_k \delta^l_j. \tag{34}\label{eqn_provebp4_3}<br>\end{align}</p>
+<p>证毕。</p>
+<p>通过分析这四个反向传播公式，可以对神经网络中使用反向传播算法的梯度下降训练过程做出一些预见。</p>
+<p>观察\eqref{eqn_bp1_matrix}和\eqref{eqn_bp2_matrix}可以发现，当$\sigma’(z^L_j) \approx 0$或$\sigma’(z^l_j) \approx 0$时，称为神经元<strong>节点饱和</strong>，这会导致输出层的节点误差值$\delta^L_j$或下一次的节点误差值$\delta^l_j$很小，根据\eqref{eqn_bp3_elementwise}和\eqref{eqn_bp4_elementwise}，则相应的偏置项梯度和权重项梯度也将变得很小，即出现了<strong>梯度消失问题</strong>，此时参数学习速度非常慢，甚至基本停止了学习。例如，当激活函数为sigmoid函数时，神经元的激活值如果接近0或者1，都会导致$\sigma’(z^L) \approx 0$或$\sigma’(z^l) \approx 0$，而此时参数可能并未收敛。解决这个问题的方法是更换激活函数或损失函数。</p>
+<p>综上所述，<strong>低激活值输入的权重</strong>或者<strong>输出端神经元节点饱和的权重和偏置</strong>学习速度较慢（$\sigma’(z^l_j) \approx 0 \rightarrow \delta^l_j \approx 0 \rightarrow \partial C / \partial w^l_{jk} \approx 0, \partial C / \partial b^l_j \approx 0$）。</p>
+<h1 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h1><h1 id="循环神经网络"><a href="#循环神经网络" class="headerlink" title="循环神经网络"></a>循环神经网络</h1>
+                </div>
+
+                <!-- post share -->
+                <div class="post-share">
+                    <div class="share-sina-weibo">
+                        <a class="fa fa-weibo" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var f='http://service.weibo.com/share/share.php?appkey=2241392681&searchPic=true',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();})(screen,document,encodeURIComponent,'','','','','',''));"></a>
+                    </div>
+
+                    <div class="share-tencent-wechat">
+                        <a class="fa fa-wechat" href="javascript:void(0)" id="popup"></a>
+                    </div>
+                </div>
+            </div><!-- end of post-container -->
+        </div>
+
+
+        <!-- post toc(table of content) -->
+        <div class="col-xs-1 col-sm-2 col-md-2 col-lg-3">
+            <div class="post-toc">
+                <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#全连接神经网络"><span class="nav-text">全连接神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前向传播算法"><span class="nav-text">前向传播算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#误差反向传播算法"><span class="nav-text">误差反向传播算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-引言"><span class="nav-text">1.引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-误差的定义"><span class="nav-text">2.误差的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-公式的推导"><span class="nav-text">3.公式的推导</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输出层的误差公式，-delta-L"><span class="nav-text">输出层的误差公式，$\delta^L$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下层误差-delta-l-1-表示的上层误差公式，-delta-l"><span class="nav-text">下层误差$\delta^{l+1}$表示的上层误差公式，$\delta^l$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#偏置项的梯度公式，-frac-partial-C-partial-b-l-j"><span class="nav-text">偏置项的梯度公式，$\frac{\partial C}{\partial b^l_j}$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权重项的梯度公式，-frac-partial-C-partial-w-l-jk"><span class="nav-text">权重项的梯度公式，$\frac{\partial C}{\partial w^l_{jk}}$</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#卷积神经网络"><span class="nav-text">卷积神经网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环神经网络"><span class="nav-text">循环神经网络</span></a></li></ol>
+            </div>
+        </div><!-- end of post toc -->
+
+    </div><!-- end of row -->
+</div><!-- end of container-fluid -->
+
+  <!-- website footer -->
+
+<div class="post-footer">
+  <p class="footer-copyright">&copy;&nbsp;2017-2018&nbsp;itongworld</p>
+  <p class="footer-poweredby">Powered by <a href="https://github.com/itongworld">Snow</a> and <a href="https://hexo.io/">Hexo</a></p>
+</div>
+
+<!-- qrcode pop-up dialog -->
+<div class="dialog-modal" id="dialog-modal">
+    <a href="javascript:void(0)" title="关闭" id="popup-close"><i class="fa fa-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+        <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&choe=UTF-8&chld=L|1&chl=http://weibo.com/ttarticle/p/show?id=2309404054181588669991#_0" alt="二维码生成失败 :(" id="share-qrcode">
+    </div>
+</div>
+
+<!-- global mask -->
+<div class="mask" id="mask"></div>
+
+
+
+
+<script src="/js/jquery.js"></script>
+<script src="/js/script.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+<!-- <script type="text/javascript" async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script> -->
+<script type="text/javascript">
+
+    $(function() {
+
+
+        //index和post页面都有post-content类。blog-post下的post-content类是index页面的，post-container下的post-content类是post页面的。
+        //这段代码要放在最前面设置好图片相应宽度。
+        //$(".post-container .post-content p img[alt]").each(function(){
+        $(".post-content p img[alt]").each(function(){
+
+            var altstr = $(this).attr("alt");
+            //alert(altstr);
+
+            if(altstr.endsWith("-1gg")){
+                $(this).addClass("gg1");
+            }
+
+            else if(altstr.endsWith("-2gg")){
+                $(this).addClass("gg2");
+            }
+
+            else if(altstr.endsWith("-3gg")){
+                $(this).addClass("gg3");
+            }
+            else{
+                $(this).addClass("gg1");
+                altstr += "-1gg";
+                $(this).attr("alt", altstr);
+            }
+
+            //add title
+            $(this).attr("title", altstr.substring(0, altstr.length-4));
+
+        });
+
+
+
+        //设置图片初始相应高度。
+        $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+        //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+        // $(window).load(function() {
+        //
+        //   $(".post-content p img").height($(".post-content p img").width());
+        //   //alert("window onload"+ $(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //   console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+        //
+        // });
+
+
+        $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+        //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+        //Gallery
+        $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+
+
+
+        //设置图片缩放相应高度。
+        $(window).resize(function() {
+            $(".post-content p img.gg3").height($(".post-content p img.gg3").width() * 2);
+            //alert($(".post-content p img").width() + ", " + $(".post-content p img").height())
+            //console.log($(".post-content p img").width() + ", " + $(".post-content p img").height())
+
+
+            $(".post-content p img.gg2").height($(".post-content p img.gg2").width());
+            //$(".post-content p img.gg1").height($(".post-content p img").width());
+
+            //Gallery
+            $(".blog-post .post-gallery img").height($(".blog-post .post-gallery img").width());
+
+        });
+
+
+
+    });
+
+
+</script>
+
+
+
+
+  <script type="text/javascript">
+    $(function () {
+
+        $('body').scrollspy({
+            target: '.post-toc',
+            offset: 10
+        });
+
+        var $win = $(window);
+        var itemOffsetTop = $(".post-banner").offset().top;
+        var itemOuterHeight = $(".post-banner").outerHeight();
+        var winHeight = $win.height();
+        $win.scroll(function () {
+            var winScrollTop = $win.scrollTop();
+            if(!(winScrollTop > itemOffsetTop+itemOuterHeight) && !(winScrollTop < itemOffsetTop-winHeight)) {
+                // console.log('出现了');
+                $(".post-toc").removeClass("f");
+            } else {
+                // console.log('消失了');
+                $(".post-toc").addClass("f")
+            }
+        });
+
+        $("#popup").click(function(){
+            $("#dialog-modal").addClass("in");
+            $("#mask").addClass("in");
+        });
+
+        $("#mask").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+        });
+
+
+        $("#popup-close").click(function(){
+            $("#dialog-modal").removeClass("in");
+            $("#mask").removeClass("in");
+
+        });
+
+    });
+
+  </script>
+
+
+
+
+</body>
+</html>
